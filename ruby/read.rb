@@ -37,5 +37,5 @@ def readUser(file)
   user = User.new(userId, userName, userLoc)
 end
 
-file = File.new("record_000002.dat")
+file = File.new("../data/record_000002.dat")
 readRecord file
