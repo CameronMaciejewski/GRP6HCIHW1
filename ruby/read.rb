@@ -36,7 +36,3 @@ def readUser(file)
   userLoc = userLoc.map(&:chr).join
   user = User.new(userId, userName, userLoc)
 end
-
-fileStr = File.join(File.dirname(File.expand_path(__FILE__)), "..","data","record_000002.dat")
-file = File.new(fileStr)
-readRecord file
