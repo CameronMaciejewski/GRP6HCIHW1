@@ -1,5 +1,5 @@
-require('./user.rb')
-require('./message.rb')
+require_relative('./user.rb')
+require_relative('./message.rb')
 
 def readMsg(file)
   text = file.read(1024).unpack("C1024")
@@ -37,5 +37,6 @@ def readUser(file)
   user = User.new(userId, userName, userLoc)
 end
 
-file = File.new("../data/record_000002.dat")
+fileStr = File.join(File.dirname(File.expand_path(__FILE__)), "..","data","record_000002.dat")
+file = File.new(fileStr)
 readRecord file
