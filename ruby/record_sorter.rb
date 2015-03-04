@@ -30,7 +30,7 @@ class RecordSorter
 
   def sort_users(sort_row)
     users = @model_loader.load_users
-    sorted = users.sort_by.with_index { |u,i| [i.send(sort_row), i]}
+    sorted = users.sort_by.with_index { |u,i| [u.send(sort_row), i]}
     sorted.each_with_index do |u, i|
       out_file = File.join(@output_dir, "user_#{i.to_s.rjust(6,"0")}.dat")
       user_json = u.to_json
