@@ -19,9 +19,8 @@ class RecordSorter
 
   def sort_messages(sort_row)
     messages = @model_loader.load_messages
-    sorted = messages.sort_by &sort_row
+    sorted = messages.sort_by.with_index { |m, i| [m.send(sort_row), i]}
     sorted.each_with_index do |m, i|
-      m.id = i
       out_file = File.join(@output_dir, "message_#{i.to_s.rjust(6,"0")}.dat")
       msg_json = m.to_json
       puts msg_json
@@ -30,12 +29,9 @@ class RecordSorter
   end
 
   def sort_users(sort_row)
-    old_new_mapping = Hash.new #TODO
     users = @model_loader.load_users
-    sorted = users.sort_by &sort_row
+    sorted = users.sort_by.with_index { |u,i| [i.send(sort_row), i]}
     sorted.each_with_index do |u, i|
-      old_new_mapping[u.id] = i
-      u.id = i
       out_file = File.join(@output_dir, "user_#{i.to_s.rjust(6,"0")}.dat")
       user_json = u.to_json
       puts user_json
