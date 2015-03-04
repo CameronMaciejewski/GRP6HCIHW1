@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace BPlusTree
 {
@@ -15,7 +16,23 @@ namespace BPlusTree
             do{
                 directory = getDirectory();
             } while(directory == "-1");
-
+            IEnumerable<string> fileNames = Directory.EnumerateFiles(directory);
+            List<Message> messages = new List<Message>();
+            List<User> users = new List<User>();
+            foreach (string fileName in fileNames)
+            {
+                if (fileName.Contains("user"))
+                {
+                    string userText = File.ReadAllText(fileName);
+                    users.Add(JsonConvert.DeserializeObject<User>(userText));
+                }
+                else if (fileName.Contains("message"))
+                {
+                    string messageText = File.ReadAllText(fileName);
+                    messages.Add(JsonConvert.DeserializeObject<Message>(messageText));
+                }
+            }
+            int lol = 1;
             
         }
         public static string getDirectory(){
