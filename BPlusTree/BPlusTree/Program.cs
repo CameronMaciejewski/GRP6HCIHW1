@@ -14,7 +14,7 @@ namespace BPlusTree
             string directory;
             do{
                 directory = getDirectory();
-            }while(directory != "-1");
+            } while(directory == "-1");
 
             
         }
