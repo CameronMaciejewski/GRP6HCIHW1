@@ -49,7 +49,3 @@ class RecordTransformer
   end
 
 end
-
-t = RecordTransformer.new
-delta = t.store_records(2000)
-puts "took #{delta} seconds"
