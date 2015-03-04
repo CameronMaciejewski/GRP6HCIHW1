@@ -1,7 +1,7 @@
 require_relative('user.rb')
 require_relative('message.rb')
 
-class UserLoader
+class ModelLoader
 
   def initialize
     @parent_dir = File.join(File.dirname(File.expand_path(__FILE__)), "..")

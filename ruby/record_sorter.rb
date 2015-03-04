@@ -1,10 +1,10 @@
 require('json')
-require_relative('./user_loader.rb')
+require_relative('./model_loader.rb')
 
 class RecordSorter
 
   def initialize
-    @user_loader = UserLoader.new
+    @model_loader = ModelLoader.new
     @parent_dir = File.join(File.dirname(File.expand_path(__FILE__)), "..")
     @output_dir = File.join(@parent_dir, "customized_data")
   end
@@ -18,7 +18,7 @@ class RecordSorter
   end
 
   def sort_messages(sort_row)
-    messages = @user_loader.load_messages
+    messages = @model_loader.load_messages
     sorted = messages.sort_by &sort_row
     sorted.each_with_index do |m, i|
       m.id = i
@@ -31,7 +31,7 @@ class RecordSorter
 
   def sort_users(sort_row)
     old_new_mapping = Hash.new #TODO
-    users = @user_loader.load_users
+    users = @model_loader.load_users
     sorted = users.sort_by &sort_row
     sorted.each_with_index do |u, i|
       old_new_mapping[u.id] = i
