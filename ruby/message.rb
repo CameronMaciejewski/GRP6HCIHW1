@@ -22,4 +22,9 @@ class Message
     json = {"year" => @year, "month" => @month, "day" => @day, "hour" => @hour, "minute" => @minute, "text" => @text, "user_id" => @user_id, "id" => @id}.to_json
   end
 
+  def self.from_json(json)
+    hash = JSON.load json
+    message = Message.new(hash["year"], hash["month"], hash["day"], hash["hour"], hash["minute"], hash["text"], hash["user_id"], hash["id"])
+  end
+
 end
