@@ -17,26 +17,20 @@ namespace BPlusTree
             this.root = null;
             this.fanOut = fanOut;
         }
-
-        public Tree(Node<T> root, int fanOut)
-        {
-            this.root = root;
-            this.fanOut = fanOut;
-        }
          
         public void createTree(T[] items)
         {
             this.root = new Node<T>(fanOut);
             Node<T> currentNode = root;
-            for (int i = 0; i < items.Length/fanOut; i++)
+            for (int i = 0; i < items.Length/(fanOut-1); i++)
             {
-                for (int j = 1; j < fanOut; j++)
+                for (int j = 1; j < fanOut-1; j++)
                 {
                     currentNode.setNextValue(items[i + j]);
                 }
-                currentNode = addNode(currentNode.getParent(), items[i+fanOut]);
+                currentNode = addNode(currentNode.getParent(), items[i+fanOut-1]);
             }
-            for (int i = 1; i < items.Length%fanOut; i++)
+            for (int i = 1; i < items.Length%(fanOut-1); i++)
             {
                 currentNode.setNextValue(items[i]);
             }
