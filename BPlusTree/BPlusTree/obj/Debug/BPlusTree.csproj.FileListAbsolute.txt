@@ -9,3 +9,8 @@ C:\Users\Cameron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\BPlus
 C:\Users\Cameron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\BPlusTree.pdb
 C:\Users\Cameron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Cameron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Aaron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\BPlusTree.exe
+C:\Users\Aaron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\BPlusTree.pdb
+C:\Users\Aaron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Aaron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\Newtonsoft.Json.xml
+C:\Users\Aaron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\obj\Debug\BPlusTree.csprojResolveAssemblyReference.cache

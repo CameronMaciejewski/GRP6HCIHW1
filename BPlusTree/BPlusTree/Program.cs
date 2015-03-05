@@ -59,6 +59,8 @@ namespace BPlusTree
                 switch (selector)
                 {
                     case "1":
+                        // leftmost is 1111
+                        // rightmost is 1147
                         getUsersFromNebraska(10);
                         break;
                     default:
@@ -71,7 +73,7 @@ namespace BPlusTree
         public static string getDirectory(string type, string sortedBy)
         {
             Console.WriteLine("Please enter the directory of the " + type + " you wish to put into a Bplus Tree sorted by " + sortedBy + " (ex: C:/Users/John/Documents/Files): ");
-            string filePath = "C:/Users/Cameron/Documents/TestData/data/";
+            string filePath = "C:/Users/Aaron/Downloads/data/data/";
             filePath += Console.ReadLine();
             if (Directory.Exists(filePath) && Directory.GetFiles(filePath).Length != 0)
             {
@@ -167,8 +169,8 @@ namespace BPlusTree
             {
                 userTree = usersByLocationTree200;
             }
-            int leftIndex = userTree.findLeftmostItem("Nebraska");
-            int rightIndex = userTree.findRightmostItem("Nebraska");
+            int rightIndex = userTree.findRightMostItem("Nebraska");
+            int leftIndex = userTree.findLeftMostItem("Nebraska");
             List<User> users = new List<User>();
             for (int i = leftIndex; i <= rightIndex; i++)
             {

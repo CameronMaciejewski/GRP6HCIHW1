@@ -42,10 +42,54 @@ namespace BPlusTree
 
         public int search(T key)
         {
-            return findLeftmostItem(key);
+            return findLeftMostItem(key);
         }
 
-        public int findLeftmostItem(T key)
+        public int findRightMostItem(T key)
+        {
+            int index = -1;
+            Node<T> node = root;
+            while (!node.getIsLeaf())
+            {
+                T[] keys = node.getKeys();
+                int rightMostIndex = 0;
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    if (keys[i] != null)
+                    {
+                        rightMostIndex = i;
+                    }
+                }
+                if (key.CompareTo(keys[rightMostIndex]) >= 0)
+                {
+                    node = node.getNodes()[rightMostIndex+1];
+                }
+                else if (key.CompareTo(keys[0]) >= 0)
+                {
+                    for (int i = 0; i < rightMostIndex; i++)
+                    {
+                        if (key.CompareTo(keys[i]) >= 0 && key.CompareTo(keys[i + 1]) < 0)
+                        {
+                            node = node.getNodes()[i + 1];
+                        }
+                    }
+                }
+                else
+                {
+                    node = node.getNodes()[0];
+                }
+            }
+            for (int i = 0; i < node.getKeys().Length; i++)
+            {
+                if (key.CompareTo(node.getKeys()[i]) == 0)
+                {
+                    index = node.getIndex() + i;
+                }
+            }
+            return index;
+        }
+
+        public int findLeftMostItem(T key)
         {
             int index = -1;
             Node<T> node = root;
@@ -66,11 +110,11 @@ namespace BPlusTree
                 }
                 else if (key.CompareTo(keys[rightMostIndex]) < 0)
                 {
-                    for (int i = 0; i < rightMostIndex; i++)
+                    for (int i = rightMostIndex; i > 0; i--)
                     {
-                        if (key.CompareTo(keys[i]) >= 0 && key.CompareTo(keys[i + 1]) < 0)
+                        if (key.CompareTo(keys[i]) <= 0 && key.CompareTo(keys[i - 1]) > 0)
                         {
-                            node = node.getNodes()[i + 1];
+                            node = node.getNodes()[i];
                         }
                     }
                 }
@@ -79,51 +123,7 @@ namespace BPlusTree
                     node = node.getNodes()[rightMostIndex + 1];
                 }
             }
-            for (int i = 0; i < node.getKeys().Length; i++)
-            {
-                if (key.CompareTo(node.getKeys()[i]) == 0)
-                {
-                    index = node.getIndex() + i;
-                }
-            }
-            return index;
-        }
-
-        public int findRightmostItem(T key)
-        {
-            int index = -1;
-            Node<T> node = root;
-            while (!node.getIsLeaf())
-            {
-                T[] keys = node.getKeys();
-                int rightMostIndex = 0;
-                for (int i = 0; i < keys.Length; i++)
-                {
-                    if (keys[i] != null)
-                    {
-                        rightMostIndex = i;
-                    }
-                }                           
-                if (key.CompareTo(keys[rightMostIndex]) >= 0)
-                {
-                    node = node.getNodes()[rightMostIndex + 1];
-                }
-                else if (key.CompareTo(keys[0]) >= 0)
-                {
-                    for (int i = 0; i < rightMostIndex; i++)
-                    {
-                        if (key.CompareTo(keys[i]) >= 0 && key.CompareTo(keys[i + 1]) < 0)
-                        {
-                            node = node.getNodes()[i + 1];
-                        }
-                    }
-                }
-                else
-                {
-                    node = node.getNodes()[0];
-                }
-            }
-            for (int i = node.getKeys().Length - 1; i > 0; i--)
+            for (int i = node.getKeys().Length - 1; i >= 0; i--)
             {
                 if (key.CompareTo(node.getKeys()[i]) == 0)
                 {
@@ -154,7 +154,7 @@ namespace BPlusTree
             Node<T> parent = child.getParent();
             if(parent != null && parent.isFull()) {
                 Node<T> newParent = new Node<T>(fanOut, -1);
-                child.setParent(newParent);
+                newParent.setNextChild(child);
                 newParent.setParent(parent.getParent());
                 addToParent(newParent, value);
                 parent = newParent;
