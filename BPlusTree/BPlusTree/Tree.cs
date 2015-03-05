@@ -55,7 +55,7 @@ namespace BPlusTree
                 int rightMostIndex = 0;
                 for (int i = 0; i < keys.Length; i++)
                 {
-                    if (keys[i] != null)
+                    if (keys[i] != null && !keys[i].Equals(default(T)))
                     {
                         rightMostIndex = i;
                     }
