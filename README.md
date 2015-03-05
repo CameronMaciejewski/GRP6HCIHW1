@@ -15,7 +15,7 @@ Our basic, non B+ tree queries (step 5) were also completed with ruby programs.
 Run 'ruby/query_program.rb' to perform each query, passing the letter corresponding to the query as an argument. For example, to run query (c), you would enter "ruby ruby/query_program.rb c".
 
 A brief summary of each query follows:
--a) Prints the total number of users that are from the state of Nebraska
--b) Prints the total number of users who sent messages from 8am to 9am (inclusive)
--c) Prints the total number of users from Nebraska who sent messages from 8am to 9am.
--d) Prints the user from Nebraska who has sent the most messages from 8am to 9am.
+* a) Prints the total number of users that are from the state of Nebraska
+* b) Prints the total number of users who sent messages from 8am to 9am (inclusive)
+* c) Prints the total number of users from Nebraska who sent messages from 8am to 9am.
+* d) Prints the user from Nebraska who has sent the most messages from 8am to 9am.
