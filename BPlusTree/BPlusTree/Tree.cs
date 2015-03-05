@@ -42,15 +42,7 @@ namespace BPlusTree
             return findLeftmostItem(key);
         }
 
-        public int[] search(T key)
-        {
-            int[] range = new int[2];
-            range[0] = findLeftmostItem(key);
-            range[1] = findRightmostItem(key);
-            return range;
-        }
-
-        private int findLeftmostItem(T key)
+        public int findLeftmostItem(T key)
         {
             int index = -1;
             Node<T> node = root;
@@ -86,7 +78,7 @@ namespace BPlusTree
             return index;
         }
 
-        private int findRightmostItem(T key)
+        public int findRightmostItem(T key)
         {
             int index = -1;
             Node<T> node = root;
