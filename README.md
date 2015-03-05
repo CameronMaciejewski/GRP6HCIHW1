@@ -18,4 +18,4 @@ A brief summary of each query follows:
 * a) Prints the total number of users that are from the state of Nebraska
 * b) Prints the total number of users who sent messages from 8am to 9am (inclusive)
 * c) Prints the total number of users from Nebraska who sent messages from 8am to 9am.
-* d) Prints the user from Nebraska who has sent the most messages from 8am to 9am.
+* d) Prints the id of the user from Nebraska who has sent the most messages from 8am to 9am.
