@@ -47,7 +47,7 @@ namespace BPlusTree
         {
             for (int i = 0; i < keys.Length; i++)
             {
-                if (keys[i] == null)
+                if (keys[i] == null || keys[i].Equals(default(T)))
                 {
                     keys[i] = value;
                     return;
@@ -57,7 +57,7 @@ namespace BPlusTree
 
         public int getIndex()
         {
-
+            return this.index;
         }
 
         public T[] getKeys()
@@ -88,6 +88,10 @@ namespace BPlusTree
         public void setParent(Node<T> parent) 
         {
             this.parent = parent;
+        }
+        public void setValue(T Value, int index)
+        {
+            this.keys[index] = Value;
         }
 
         public bool isFull()
