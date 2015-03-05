@@ -45,6 +45,11 @@ namespace BPlusTree
             }
         }
 
+        public void setLeaf()
+        {
+            this.isLeaf = true;
+        }
+
         public Node<T>[] getNodes()
         {
             return nodes;

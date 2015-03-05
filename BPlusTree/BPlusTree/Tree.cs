@@ -22,6 +22,7 @@ namespace BPlusTree
         {
             this.root = new Node<T>(fanOut);
             Node<T> currentNode = root;
+            currentNode.setLeaf();
             for (int i = 0; i < items.Length/(fanOut-1); i++)
             {
                 for (int j = 1; j < fanOut-1; j++)
@@ -40,6 +41,7 @@ namespace BPlusTree
         {
             Node<T> parent = node;
             Node<T> newNode = new Node<T>(fanOut);
+            newNode.setLeaf();
             newNode.setParent(parent);
             if(isFull()) {
                 moveRoot();
