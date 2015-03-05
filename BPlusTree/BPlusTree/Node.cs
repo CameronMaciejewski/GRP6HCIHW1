@@ -12,11 +12,21 @@ namespace BPlusTree
         private Node<T> parent;
         private Node<T>[] nodes;
         private bool isLeaf;
+        private int index;
 
         public Node(int fanOut)
         {
+            this.keys = new T[fanOut - 1];
+            this.nodes = new Node<T>[fanOut];
+            this.index = -1;
+            this.isLeaf = false;
+        }
+
+        public Node(int fanOut, int index)
+        {
             this.keys = new T[fanOut-1];
             this.nodes = new Node<T>[fanOut];
+            this.index = index;
             this.isLeaf = false;
         }
 
@@ -43,6 +53,16 @@ namespace BPlusTree
                     return;
                 }
             }
+        }
+
+        public int getIndex()
+        {
+
+        }
+
+        public T[] getKeys()
+        {
+            return this.keys;
         }
 
         public void setLeaf()
