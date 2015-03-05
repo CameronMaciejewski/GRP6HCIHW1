@@ -12,7 +12,7 @@ namespace BPlusTree
     {
         static User[] usersById;
         static User[] usersByLocation;
-        static Message[] messagesById;
+        static Message[] messagesByTime;
         static Tree<int> messagesTree10;
         static Tree<string> usersByLocationTree10;
         static Tree<int> usersByIdTree10;
@@ -62,6 +62,11 @@ namespace BPlusTree
                         // leftmost is 1111
                         // rightmost is 1147
                         getUsersFromNebraska(10);
+                        break;
+                    case "2":
+                        // leftmost is 32751
+                        // rightmost is 36940
+                        getUsersWhoSentMessagesFromEightToNine(10);
                         break;
                     default:
                         break;
@@ -140,20 +145,20 @@ namespace BPlusTree
             IEnumerable<string> fileNames = Directory.EnumerateFiles(directory);
             string[] fileNamesArray = fileNames.ToArray<string>();
             List<Message> messages = new List<Message>();
-            int[] ids = new int[fileNamesArray.Length];
+            int[] times = new int[fileNamesArray.Length];
             for (int i = 0; i < fileNamesArray.Count(); i++)
             {
                 string userText = File.ReadAllText(fileNamesArray[i]);
                 messages.Add(JsonConvert.DeserializeObject<Message>(userText));
-                ids[i] = messages[i].id;
+                times[i] = messages[i].hour*100 + messages[i].minute;
             }
-            if (messagesById == null || messagesById.Length == 0 )
+            if (messagesByTime == null || messagesByTime.Length == 0 )
             {
-                messagesById = messages.ToArray();
+                messagesByTime = messages.ToArray();
             }
 
             Tree<int> tree = new Tree<int>(fanOut);
-            tree.createTree(ids);
+            tree.createTree(times);
             return tree;
 
         }
@@ -179,9 +184,30 @@ namespace BPlusTree
             return users;
         }
 
-        public static List<User> getUsersWhoSentMessagesFromEightToNine()
+        public static List<User> getUsersWhoSentMessagesFromEightToNine(int fanOut)
         {
-            return new List<User>();
+            Tree<int> messagesTree;
+            if (fanOut == 10)
+            {
+                messagesTree = messagesTree10;
+            }
+            else 
+            {
+                messagesTree = messagesTree200;
+            }
+            int rightIndex = messagesTree.findRightMostItem(900);
+            int leftIndex = messagesTree.findLeftMostItem(800);
+            int[] userIDs = new int[rightIndex - leftIndex + 1];
+            
+            List<User> users = new List<User>();
+            for (int i = leftIndex; i <= rightIndex; i++)
+            {
+                User newUser = usersById[messagesByTime[i].user_id];
+                if (!users.Contains(newUser)) {
+                    users.Add(usersById[messagesByTime[i].user_id]);
+                }
+            }
+            return users;
         }
 
         public static List<User> getUsersWhoSentMessagesFromEightToNineFromNebraska()
