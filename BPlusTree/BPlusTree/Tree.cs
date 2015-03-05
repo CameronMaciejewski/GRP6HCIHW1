@@ -23,17 +23,20 @@ namespace BPlusTree
             this.root = new Node<T>(fanOut, 0);
             Node<T> currentNode = root;
             currentNode.setLeaf();
+            currentNode.setNextValue(items[0]);
+            int index = 0;
             for (int i = 0; i < items.Length/(fanOut-1); i++)
             {
+                index = i * (fanOut -1);
                 for (int j = 1; j < fanOut-1; j++)
                 {
-                    currentNode.setNextValue(items[i + j]);
+                        currentNode.setValue(items[index + j], j);           
                 }
-                currentNode = addNode(currentNode.getParent(), items[i+fanOut-1], i+fanOut-1);
+                currentNode = addNode(currentNode, items[index+fanOut-1], index+fanOut-1);
             }
             for (int i = 1; i < items.Length%(fanOut-1); i++)
             {
-                currentNode.setNextValue(items[i]);
+                currentNode.setValue(items[index + i + fanOut - 1], i);
             }
         }
 
@@ -49,13 +52,21 @@ namespace BPlusTree
             while (!node.getIsLeaf())
             {
                 T[] keys = node.getKeys();
+                int rightMostIndex = 0;
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    if (keys[i] != null)
+                    {
+                        rightMostIndex = i;
+                    }
+                }
                 if (key.CompareTo(keys[0]) < 0)
                 {
                     node = node.getNodes()[0];
                 }
-                else if (key.CompareTo(keys[keys.Length - 1]) < 0)
+                else if (key.CompareTo(keys[rightMostIndex]) < 0)
                 {
-                    for (int i = 0; i < keys.Length - 1; i++)
+                    for (int i = 0; i < rightMostIndex; i++)
                     {
                         if (key.CompareTo(keys[i]) >= 0 && key.CompareTo(keys[i + 1]) < 0)
                         {
@@ -65,7 +76,7 @@ namespace BPlusTree
                 }
                 else
                 {
-                    node = node.getNodes()[node.getNodes().Length - 1];
+                    node = node.getNodes()[rightMostIndex + 1];
                 }
             }
             for (int i = 0; i < node.getKeys().Length; i++)
@@ -85,13 +96,21 @@ namespace BPlusTree
             while (!node.getIsLeaf())
             {
                 T[] keys = node.getKeys();
-                if (key.CompareTo(keys[keys.Length - 1]) >= 0)
+                int rightMostIndex = 0;
+                for (int i = 0; i < keys.Length; i++)
                 {
-                    node = node.getNodes()[node.getNodes().Length - 1];
+                    if (keys[i] != null)
+                    {
+                        rightMostIndex = i;
+                    }
+                }                           
+                if (key.CompareTo(keys[rightMostIndex]) >= 0)
+                {
+                    node = node.getNodes()[rightMostIndex + 1];
                 }
                 else if (key.CompareTo(keys[0]) >= 0)
                 {
-                    for (int i = 0; i < keys.Length - 1; i++)
+                    for (int i = 0; i < rightMostIndex; i++)
                     {
                         if (key.CompareTo(keys[i]) >= 0 && key.CompareTo(keys[i + 1]) < 0)
                         {
@@ -116,21 +135,24 @@ namespace BPlusTree
 
         private Node<T> addNode(Node<T> node, T value, int index)
         {
-            Node<T> parent = node;
-            Node<T> newNode = new Node<T>(fanOut);
+            Node<T> newNode = new Node<T>(fanOut, index);
             newNode.setLeaf();
-            newNode.setParent(parent);
+           
             if(isFull()) {
                 moveRoot();
+
             } 
+            Node<T> parent = node.getParent();
+            newNode.setParent(parent);
             addToParent(newNode, value);
+            newNode.setValue(value, 0);
             return newNode;
         }
 
         private void addToParent(Node<T> child, T value) 
         {
             Node<T> parent = child.getParent();
-            if(parent.isFull()) {
+            if(parent != null && parent.isFull()) {
                 Node<T> newParent = new Node<T>(fanOut, -1);
                 child.setParent(newParent);
                 newParent.setParent(parent.getParent());
@@ -152,9 +174,13 @@ namespace BPlusTree
         {
             Node<T> lastNode = root;
             Node<T> rightChild;
+            if (lastNode.getIsLeaf())
+            {
+                return true;
+            }
             do
             {
-                rightChild = lastNode.getNodes()[lastNode.getNodes().Length];
+                rightChild = lastNode.getNodes()[lastNode.getNodes().Length - 1];
                 lastNode = rightChild;
             } while (rightChild != null && !rightChild.getIsLeaf());
             if (rightChild != null && rightChild.getIsLeaf())
