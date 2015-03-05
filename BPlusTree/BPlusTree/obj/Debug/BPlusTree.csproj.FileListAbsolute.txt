@@ -1,6 +1,0 @@
-C:\Users\Aaron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\BPlusTree.exe.config
-C:\Users\Cameron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\bin\Debug\BPlusTree.exe.config
-C:\Users\Aaron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\obj\Debug\BPlusTree.exe
-C:\Users\Aaron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\obj\Debug\BPlusTree.pdb
-C:\Users\Cameron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\obj\Debug\BPlusTree.exe
-C:\Users\Cameron\Documents\GitHub\GRP6HCIHW1\BPlusTree\BPlusTree\obj\Debug\BPlusTree.pdb
