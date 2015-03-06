@@ -53,7 +53,15 @@ namespace BPlusTree
             do {
                 Console.WriteLine("Enter the number corresponding to the function you wish to perform:");
 
- 
+                Console.WriteLine("Get Users from Nebraska, fanout = 10: Enter 1");
+                Console.WriteLine("Get Users from Nebraska, fanout = 200: Enter 2");
+                Console.WriteLine("Get Users that sent messages from 8am to 9am, fanout = 10: Enter 3");
+                Console.WriteLine("Get Users that sent messages from 8am to 9am, fanout = 200: Enter 4");
+                Console.WriteLine("Get Users that sent messages from 8am to 9am from Nebraska, fanout = 10: Enter 5");
+                Console.WriteLine("Get Users that sent messages from 8am to 9am from Nebraska, fanout = 200: Enter 6");
+                Console.WriteLine("Get User from nebraska that sent the most messages from 8am to 9am, fanout = 10: Enter 7");
+                Console.WriteLine("Get User from nebraska that sent the most messages from 8am to 9am, fanout = 200: Enter 8");
+                Console.WriteLine("Exit Application: Enter 9");
                 selector = Console.ReadLine();
 
                 switch (selector)
@@ -64,9 +72,27 @@ namespace BPlusTree
                         getUsersFromNebraska(10);
                         break;
                     case "2":
+                        getUsersFromNebraska(200);
+                        break;
+                    case "3":
                         // leftmost is 32751
                         // rightmost is 36940
                         getUsersWhoSentMessagesFromEightToNine(10);
+                        break;
+                    case "4":
+                        getUsersWhoSentMessagesFromEightToNine(200);
+                        break;
+                    case "5":
+                        getUsersWhoSentMessagesFromEightToNineFromNebraska(10);
+                        break;
+                    case "6":
+                        getUsersWhoSentMessagesFromEightToNineFromNebraska(200);
+                        break;
+                    case "7":
+                        getUserWhoSentMostMessagesFromEightToNineInNebraska(10);
+                        break;
+                    case "8":
+                        getUserWhoSentMostMessagesFromEightToNineInNebraska(200);
                         break;
                     default:
                         break;
@@ -78,7 +104,7 @@ namespace BPlusTree
         public static string getDirectory(string type, string sortedBy)
         {
             Console.WriteLine("Please enter the directory of the " + type + " you wish to put into a Bplus Tree sorted by " + sortedBy + " (ex: C:/Users/John/Documents/Files): ");
-            string filePath = "C:/Users/Aaron/Downloads/data/data/";
+            string filePath = "C:/Users/Cameron/Documents/TestData/data/";
             filePath += Console.ReadLine();
             if (Directory.Exists(filePath) && Directory.GetFiles(filePath).Length != 0)
             {
@@ -210,14 +236,68 @@ namespace BPlusTree
             return users;
         }
 
-        public static List<User> getUsersWhoSentMessagesFromEightToNineFromNebraska()
+        public static List<User> getUsersWhoSentMessagesFromEightToNineFromNebraska(int fanOut)
         {
-            return new List<User>();
+            List<User> usersFrom8to9 = getUsersWhoSentMessagesFromEightToNine(fanOut);
+            List<int> usersIdsFrom8to9 = new List<int>();
+            foreach (User user in usersFrom8to9)
+            {
+                usersIdsFrom8to9.Add(user.id);
+            }
+            List<User> usersFromNebraska = getUsersFromNebraska(fanOut);
+            List<User> users = new List<User>();
+
+            for (int i = 0; i < usersFromNebraska.Count; i++)
+            {
+                if (usersIdsFrom8to9.Contains(usersFromNebraska[i].id))
+                {
+                    users.Add(usersFrom8to9[i]);
+                }
+            }
+            return users;
+
         }
 
-        public static User getUserWhoSentMostMessagesFromEightToNineInNebraska()
+        public static User getUserWhoSentMostMessagesFromEightToNineInNebraska(int fanOut)
         {
-            return new User();
+            List<User> usersFrom8to9 = new List<User>();
+            Dictionary<int, int> messageCount = new Dictionary<int, int>();
+            List<User> usersFromNebraska = getUsersFromNebraska(fanOut);
+
+            Tree<int> messagesTree;
+            if (fanOut == 10)
+            {
+                messagesTree = messagesTree10;
+            }
+            else
+            {
+                messagesTree = messagesTree200;
+            }
+            int rightIndex = messagesTree.findRightMostItem(900);
+            int leftIndex = messagesTree.findLeftMostItem(800);
+            int[] userIDs = new int[rightIndex - leftIndex + 1];
+            for (int i = leftIndex; i <= rightIndex; i++)
+            {
+                User newUser = usersById[messagesByTime[i].user_id];
+                if (!usersFrom8to9.Contains(newUser))
+                {
+                    usersFrom8to9.Add(newUser);
+                    messageCount.Add(newUser.id, 0);
+                }
+                messageCount[newUser.id] += 1;
+            }
+
+            KeyValuePair<int, int> maxMessages = messageCount.ElementAt(0);
+            foreach (KeyValuePair<int, int> userCount in messageCount )
+            {
+                if (userCount.Value > maxMessages.Value)
+                {
+                    maxMessages = userCount;
+                }
+            }
+
+            return usersById[maxMessages.Key];
+
         }
     }
 }
