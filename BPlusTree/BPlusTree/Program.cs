@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -21,6 +22,7 @@ namespace BPlusTree
         static Tree<string> usersByLocationTree200;
         static void Main(string[] args)
         {
+            Stopwatch stopWatch = new Stopwatch();
             string messagesDirectory;
             string usersByIdDirectory;
             string usersByLocationDirectory;
@@ -30,24 +32,48 @@ namespace BPlusTree
                 messagesDirectory = getDirectory("messages", "time");
             } while (messagesDirectory == "-1");
 
+            stopWatch.Start();
             messagesTree10 = generateMessagesTree(messagesDirectory, 10);
+            stopWatch.Stop();
+            Console.WriteLine("Messages Tree with fanout of 10 Generation took: {0}", stopWatch.Elapsed);
+            stopWatch.Reset();           
+            stopWatch.Start();
             messagesTree200 = generateMessagesTree(messagesDirectory, 200);
+            stopWatch.Stop();
+            Console.WriteLine("Messages Tree with fanout of 200 Generation took: {0}", stopWatch.Elapsed);
+            stopWatch.Reset();
 
             do
             {
                 usersByIdDirectory = getDirectory("users", "Id");
             } while (usersByIdDirectory == "-1");
 
+            stopWatch.Start();
             usersByIdTree10 = generateUserByIdTree(usersByIdDirectory, 10);
+            stopWatch.Stop();
+            Console.WriteLine("User by Id Tree with fanout of 10 Generation took: {0}", stopWatch.Elapsed);
+            stopWatch.Reset();
+            stopWatch.Start();
             usersByIdTree200 = generateUserByIdTree(usersByIdDirectory, 200);
+            stopWatch.Stop();
+            Console.WriteLine("User by Id Tree with fanout of 200 Generation took: {0}", stopWatch.Elapsed);
+            stopWatch.Reset();
 
             do
             {
                 usersByLocationDirectory = getDirectory("users", "location");
             } while (usersByLocationDirectory == "-1");
 
+            stopWatch.Start();
             usersByLocationTree10 = generateUserByLocationTree(usersByLocationDirectory, 10);
+            stopWatch.Stop();
+            Console.WriteLine("User by location Tree with fanout of 10 Generation took: {0}", stopWatch.Elapsed);
+            stopWatch.Reset();
+            stopWatch.Start();
             usersByLocationTree200 = generateUserByLocationTree(usersByLocationDirectory, 200);
+            stopWatch.Stop();
+            Console.WriteLine("User by location Tree with fanout of 200 Generation took: {0}", stopWatch.Elapsed);
+            stopWatch.Reset();
 
             string selector;
             do {
@@ -63,36 +89,83 @@ namespace BPlusTree
                 Console.WriteLine("Get User from nebraska that sent the most messages from 8am to 9am, fanout = 200: Enter 8");
                 Console.WriteLine("Exit Application: Enter 9");
                 selector = Console.ReadLine();
-
+                
+                List<User> users;
+                User user;
                 switch (selector)
                 {
                     case "1":
-                        // leftmost is 1111
-                        // rightmost is 1147
-                        getUsersFromNebraska(10);
+                        stopWatch.Start();
+                        users = getUsersFromNebraska(10);
+                        stopWatch.Stop();
+                        Console.WriteLine("Number of Users: {0}, Time elapsed: {1}", users.Count, stopWatch.Elapsed);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        stopWatch.Reset();
+        
                         break;
                     case "2":
-                        getUsersFromNebraska(200);
+                        stopWatch.Start();
+                        users = getUsersFromNebraska(200);
+                        stopWatch.Stop();
+                        Console.WriteLine("Number of Users: {0}, Time elapsed: {1}", users.Count, stopWatch.Elapsed);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        stopWatch.Reset();
                         break;
                     case "3":
-                        // leftmost is 32751
-                        // rightmost is 36940
-                        getUsersWhoSentMessagesFromEightToNine(10);
+                        stopWatch.Start();
+                        users = getUsersWhoSentMessagesFromEightToNine(10);
+                        stopWatch.Stop();
+                        Console.WriteLine("Number of Users: {0}, Time elapsed: {1}", users.Count, stopWatch.Elapsed);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        stopWatch.Reset();                       
                         break;
                     case "4":
-                        getUsersWhoSentMessagesFromEightToNine(200);
+                        stopWatch.Start();
+                        users = getUsersWhoSentMessagesFromEightToNine(200);
+                        stopWatch.Stop();
+                        Console.WriteLine("Number of Users: {0}, Time elapsed: {1}", users.Count, stopWatch.Elapsed);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        stopWatch.Reset();   
                         break;
                     case "5":
-                        getUsersWhoSentMessagesFromEightToNineFromNebraska(10);
+                        stopWatch.Start();
+                        users = getUsersWhoSentMessagesFromEightToNineFromNebraska(10);
+                        stopWatch.Stop();
+                        Console.WriteLine("Number of Users: {0}, Time elapsed: {1}", users.Count, stopWatch.Elapsed);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        stopWatch.Reset();                          
                         break;
                     case "6":
-                        getUsersWhoSentMessagesFromEightToNineFromNebraska(200);
+                        stopWatch.Start();
+                        users = getUsersWhoSentMessagesFromEightToNineFromNebraska(200);
+                        stopWatch.Stop();
+                        Console.WriteLine("Number of Users: {0}, Time elapsed: {1}", users.Count, stopWatch.Elapsed);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        stopWatch.Reset();
                         break;
                     case "7":
-                        getUserWhoSentMostMessagesFromEightToNineInNebraska(10);
+                        stopWatch.Start();
+                        user = getUserWhoSentMostMessagesFromEightToNineInNebraska(10);
+                        stopWatch.Stop();
+                        Console.WriteLine("User who has sent the most (name, id): {0}, {1}, Time elapsed: {2}", user.name, user.id, stopWatch.Elapsed);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        stopWatch.Reset();                        
                         break;
                     case "8":
-                        getUserWhoSentMostMessagesFromEightToNineInNebraska(200);
+                        stopWatch.Start();
+                        user = getUserWhoSentMostMessagesFromEightToNineInNebraska(200);
+                        stopWatch.Stop();
+                        Console.WriteLine("User who has sent the most (name, id): {0}, {1}, Time elapsed: {2}", user.name, user.id, stopWatch.Elapsed);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
+                        stopWatch.Reset();
                         break;
                     default:
                         break;
@@ -188,7 +261,6 @@ namespace BPlusTree
             return tree;
 
         }
-
         public static List<User> getUsersFromNebraska(int fanOut)
         {
             Tree<string> userTree;
@@ -263,7 +335,11 @@ namespace BPlusTree
             List<User> usersFrom8to9 = new List<User>();
             Dictionary<int, int> messageCount = new Dictionary<int, int>();
             List<User> usersFromNebraska = getUsersFromNebraska(fanOut);
-
+            List<int> userIdsFromNebraska = new List<int>();
+            foreach (User user in usersFromNebraska)
+            {
+                userIdsFromNebraska.Add(user.id);
+            }
             Tree<int> messagesTree;
             if (fanOut == 10)
             {
@@ -277,14 +353,23 @@ namespace BPlusTree
             int leftIndex = messagesTree.findLeftMostItem(800);
             int[] userIDs = new int[rightIndex - leftIndex + 1];
             for (int i = leftIndex; i <= rightIndex; i++)
-            {
+            {                
+                
                 User newUser = usersById[messagesByTime[i].user_id];
-                if (!usersFrom8to9.Contains(newUser))
-                {
-                    usersFrom8to9.Add(newUser);
-                    messageCount.Add(newUser.id, 0);
+                if (userIdsFromNebraska.Contains(newUser.id))
+                {               
+                    if (!usersFrom8to9.Contains(newUser))
+                    {
+                        usersFrom8to9.Add(newUser);
+                        messageCount.Add(newUser.id, 0);
+                        messageCount[newUser.id] += 1;
+                    }
+                    else
+                    {
+                        messageCount[newUser.id] += 1;
+                    }
                 }
-                messageCount[newUser.id] += 1;
+                
             }
 
             KeyValuePair<int, int> maxMessages = messageCount.ElementAt(0);
