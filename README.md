@@ -19,3 +19,9 @@ A brief summary of each query follows:
 * b) Prints the total number of users who sent messages from 8am to 9am (inclusive)
 * c) Prints the total number of users from Nebraska who sent messages from 8am to 9am.
 * d) Prints the id of the user from Nebraska who has sent the most messages from 8am to 9am.
+
+
+--
+C# (Used for B+ tree portion of the project / problems 7 and 8)
+
+To generate a B+ and use the B+ tree to answer this assignment's queries, run 'Program.cs' in the 'BPlusTree' folder. See above for a description of each query implemented.
