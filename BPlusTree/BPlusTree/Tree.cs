@@ -108,14 +108,27 @@ namespace BPlusTree
                 {
                     node = node.getNodes()[0];
                 }
-                else if (key.CompareTo(keys[rightMostIndex]) < 0)
+                else if (key.CompareTo(keys[rightMostIndex]) <= 0)
                 {
                     for (int i = rightMostIndex; i > 0; i--)
                     {
                         if (key.CompareTo(keys[i]) <= 0 && key.CompareTo(keys[i - 1]) > 0)
                         {
                             node = node.getNodes()[i];
-                        }
+                            T[] checkKeys = node.getKeys();
+                            for (int j = 0; j <= checkKeys.Length; j++)
+                            {
+                                if (j == checkKeys.Length)
+                                {
+                                    node = node.getParent().getNodes()[i + 1];
+                                }
+                                else if (key.CompareTo(checkKeys[j]) <= 0)
+                                {
+                                    j = checkKeys.Length +1;
+                                }
+                            }
+                            i = 0;
+                        }                        
                     }
                 }
                 else
